@@ -1,0 +1,19 @@
+{
+  "name": "favehikes",
+  "version": "1.0.0",
+  "description": "app for adding favorite hikes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nataliya Gapochka",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "1.18.3",
+    "cors": "2.8.4",
+    "ejs": "2.6.1",
+    "express": "4.16.3",
+    "mongoose": "5.1.6",
+    "nodemon": "1.17.5"
+  }
+}

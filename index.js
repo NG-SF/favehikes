@@ -11,7 +11,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 const hikeSchema = new mongoose.Schema({
   name: String,
-  image: String
+  image: String,
+  description: String
 });
 
 const Hike = mongoose.model('Hike', hikeSchema);
@@ -29,24 +30,32 @@ app.get('/', function(req, res){
   res.render('landing');
 });
 
+// GET all hikes Route
 app.get('/hikes', function(req, res){
   Hike.find({}, function(err, allHikes){
     if(err){
       console.log('error getting hikes');
     } else {
-      res.render('hikes', {hikes: allHikes});
+      res.render('index', {hikes: allHikes});
     }
   })
 })
 
+//Show form to create new hike Route
 app.get('/hikes/new', function(req, res){
   res.render('new.ejs');
 });
 
+//Post new hike Route 
 app.post('/hikes', function(req, res){
   let name = req.body.name;
   let image = req.body.image;
-  let newHike = {name, image};
+  let description = req.body.description;
+  let newHike = {
+    name, 
+    image,
+    description
+    };
   Hike.create(newHike, function(err, newHike){
     if(err){
       console.log('error creating new hike');
@@ -55,6 +64,19 @@ app.post('/hikes', function(req, res){
     }
   })
 });
+
+// GET Route to show info about hike
+app.get('/hikes/:id', function(req, res){
+  Hike.findById(req.params.id, function(err, foundHike){
+    if(err){
+      console.log('cannot find');
+    } else {
+      res.render('show', {hike: foundHike});
+    }
+  });
+
+});
+
 
 
 // this function starts the server.

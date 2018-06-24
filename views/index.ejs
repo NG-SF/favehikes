@@ -16,7 +16,8 @@
             <img class="card-img-top" src="<%= hike.image %>" alt="hike">
             <div class="card-body py-2">
               <h3 class="card-title"><%= hike.name%></h3>
-              <!-- <a href="/hikes/<%= hike._id %>" class="btn btn-primary" role="button">More Info</a> -->
+              <p><%= hike.description%></p>
+              <a href="/hikes/<%= hike._id%>" class="btn btn-primary">More info...</a>
             </div>
 
           </div>

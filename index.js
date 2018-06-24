@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const cors = require('cors');
@@ -5,100 +6,51 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Hike = require('./models/hike');
 const Comment = require('./models/comment');
-const {CLIENT_ORIGIN, PORT, DATABASE_URL, TESTING} = require('./config');
+const User = require('./models/user');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const {CLIENT_ORIGIN, PORT, DATABASE_URL, TESTING, SECRET} = require('./config');
+const flash = require('connect-flash');
+const { isLoggedIn } = require('./middleware/index');
+const commentRoutes = require('./routes/comments');
+const hikeRoutes = require('./routes/hikes');
+const indexRoutes = require('./routes/index');
 const seedDB = require('./seed');
 
+mongoose.Promise = global.Promise;
 seedDB();
+
+//Passport config
+app.use(require('express-session')({
+  secret: SECRET,
+  resave: false,
+  saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.set('view engine', 'ejs');
 app.use( cors({ origin: CLIENT_ORIGIN }));
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static(__dirname + '/public'));
 
-app.get('/', function(req, res){
-  res.render('landing');
-});
-
-// GET all hikes Route
-app.get('/hikes', function(req, res){
-  Hike.find({}, function(err, allHikes){
-    if(err){
-      console.log('error getting hikes');
-    } else {
-      res.render('hikes/index', {hikes: allHikes});
-    }
-  })
+// show messages to user
+app.use(flash());
+app.use(function(req, res, next){
+  res.locals.currentUser = req.user;
+  res.locals.error = req.flash('error');
+  res.locals.success = req.flash('success');
+  next();
 })
 
-//Show form to create new hike Route
-app.get('/hikes/new', function(req, res){
-  res.render('hikes/new');
-});
+app.use('/hikes', hikeRoutes);
+app.use('/hikes/:id/comments', commentRoutes);
+app.use(indexRoutes);
 
-//Post new hike Route 
-app.post('/hikes', function(req, res){
-  let name = req.body.name;
-  let image = req.body.image;
-  let description = req.body.description;
-  let newHike = {
-    name, 
-    image,
-    description
-    };
-  Hike.create(newHike, function(err, newHike){
-    if(err){
-      console.log('error creating new hike');
-    } else{
-      res.redirect('/hikes');
-    }
-  })
-});
-
-// GET Route to show info about hike
-app.get('/hikes/:id', function(req, res){
-  Hike.findById(req.params.id).populate('comments').exec(function(err, foundHike){
-    if(err){
-      console.log('cannot find');
-    } else {
-      res.render('hikes/show', {hike: foundHike});
-    }
-  });
-
-});
-
-// Comments Routes
-app.get('/hikes/:id/comments/new', function(req, res){
-  Hike.findById(req.params.id, function(err, foundHike){
-    if(err){
-      console.log('error');
-    } else {
-      res.render('comments/newComment', {hike: foundHike});
-    }
-  })
-});
-
-app.post('/hikes/:id/comments', function(req, res){
-  //find hike using ID
-  Hike.findById(req.params.id, function(err, hike){
-    if(err){
-      console.log(err);
-      res.redirect('/hikes');
-    } else {
-      Comment.create(req.body.comment, function(err, comment){
-        if(err){
-          console.log(err);
-        } else {
-          hike.comments.push(comment);
-          hike.save();
-          res.redirect(`/hikes/${hike._id}`);
-        }
-      });
-    }
-  });
-  //create new comment
-
-  //connect new comment to hike
-
-  //redirect to hike show page
-});
 
 // this function starts the server.
 // it is also used in integration tests.

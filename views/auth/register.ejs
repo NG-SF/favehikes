@@ -1,0 +1,45 @@
+<% include ../partials/header %>
+
+<div class="row">
+<div class="col-md-12">
+
+  <div class="form-style" >
+    <h1 class="header-title text-center">Register</h1>
+    <form action="/register" method="post">
+      <div class="form-group">
+        <label for="fName">First Name:</label>
+        <input type="text" class="form-control" id="fName" name="firstName">
+      </div>
+      <div class="form-group">
+        <label for="lName">Last Name:</label>
+        <input type="text" class="form-control" id="lName" name="lastName">
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="(in case you forget password)">
+      </div>
+      <div class="form-group">
+        <label for="userName">Username:</label>
+        <input type="text" class="form-control" id="userName" name="username" required>
+      </div>
+      <div class="form-group">
+        <label for="userPassword">Password:</label>
+        <input class="form-control" id="userPassword" type="password" name="password" required>
+      </div>
+      <div class="form-group">
+        <label for="avatar">Avatar:</label>
+        <input type="text" class="form-control" id="avatar" name="avatar">
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+      </div>
+    </form>
+
+</div>
+<!-- end form-style div -->
+</div>
+<!-- end col-md-12 -->
+</div>
+<!-- end row -->
+
+<% include ../partials/footer %>

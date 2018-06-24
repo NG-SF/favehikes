@@ -1,0 +1,29 @@
+<% include ../partials/header %>
+
+<div class="row">
+
+<div class="col-md-12">
+
+  <div class="form-style">
+    <h1 class="header-title text-center">Log In</h1>
+    <form action="/login" method="post">
+      <div class="form-group">
+        <label for="userName">Username:</label>
+        <input type="text" class="form-control" id="userName" name="username" required>
+      </div>
+      <div class="form-group">
+        <label for="userPassword">Password:</label>
+        <input class="form-control" id="userPassword" type="password" name="password" required>
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-block">Log In</button>
+      </div>
+    </form>
+</div>
+<!-- end form-style div -->
+</div>
+   <!-- end col-md-12 -->
+</div>
+<!-- end row -->
+
+<% include ../partials/footer %>

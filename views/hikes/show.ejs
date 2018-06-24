@@ -1,17 +1,47 @@
 <% include ../partials/header %>
 
-<h1><%= hike.name %></h1>
-<img src="<%=hike.image %>" alt="hike">
-<p><%= hike.description %></p>
+<div class="row">
+    <div class="col-md-4">
+        <p class="lead">More information on <%= hike.name%></p>
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+        <img class="card-img-top" src="<%=hike.image %>" alt="hike">
+        
+        <div class="caption card-body">
+            <h2 class="float-right">$10/night</h2>
+            <h2 class="card-header"><%= hike.name %></h2>
+            <p class="card-text p-2"><%= hike.description %></p>
+            <p class="card-text"><em>Submitted by:  10 days ago</em></p>
+        </div>
+        </div>
 
-<h3>Comments:</h3>
-<p>
-    <a href="/hikes/<%=hike._id%>/comments/new" class="btn btn-success" >Add new comment</a>
-</p>
+<!-- Comment section -->
+        <div class="card">
+            <h3 class="card-title text-center p-2">Comments:</h3>
+            <p>
+                <a href="/hikes/<%=hike._id%>/comments/new" class="btn btn-success float-right" role="button">Add new comment</a>
+            </p>
+            <hr>
+            <div class="container p-3">
+                <% hike.comments.forEach(function(comment){ %>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="container pl-4">
+                            <p> <strong><%= comment.author%>:</strong>
+                            <%= comment.text%></p>
+                            <!--Show when the comment was made-->
+                            <span class="float-right">5 days ago</span>
+                        </div>
+                    </div>
+                </div>
+                        <% }) %>
+            </div>
 
-<% hike.comments.forEach(function(comment){ %>
-    <p> <strong><%= comment.author%>:</strong>
-       <%= comment.text%></p>
-<% }) %>
+        </div>
+
+    </div>
+</div>
+
 
 <% include ../partials/footer %>

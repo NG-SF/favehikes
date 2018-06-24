@@ -1,7 +1,40 @@
-<% include partials/header %>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Favehikes</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/stylesheets/landing.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" type="text/javascript" async></script>
+    </head>
+    <body>
 
-<h1>Welcome</h1>
+<div class="container">
+    
+    <div id="landing-header">
+ 		<h1>Welcome to Favehikes!</h1>
+		<a href="/hikes" class="btn btn-lg btn-info">View All Hikes</a>
+    </div>
 
-<h2><a href="/hikes">View all hikes</a></h2>
+    <ul class="slideshow">
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
 
-<% include partials/footer %>
+</div><!-- /.container -->
+        
+        <!-- jQuery CDN -->
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous">
+        </script>
+
+        <!-- Custom JS for search feature -->
+        <!-- <script src="/scripts/search.js" async defer></script> -->
+        
+        <!-- Bootstrap JS CDN -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    </body>
+</html>

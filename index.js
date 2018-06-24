@@ -23,14 +23,14 @@ app.get('/hikes', function(req, res){
     if(err){
       console.log('error getting hikes');
     } else {
-      res.render('index', {hikes: allHikes});
+      res.render('hikes/index', {hikes: allHikes});
     }
   })
 })
 
 //Show form to create new hike Route
 app.get('/hikes/new', function(req, res){
-  res.render('new.ejs');
+  res.render('hikes/new');
 });
 
 //Post new hike Route 
@@ -54,17 +54,51 @@ app.post('/hikes', function(req, res){
 
 // GET Route to show info about hike
 app.get('/hikes/:id', function(req, res){
-  Hike.findById(req.params.id, function(err, foundHike){
+  Hike.findById(req.params.id).populate('comments').exec(function(err, foundHike){
     if(err){
       console.log('cannot find');
     } else {
-      res.render('show', {hike: foundHike});
+      res.render('hikes/show', {hike: foundHike});
     }
   });
 
 });
 
+// Comments Routes
+app.get('/hikes/:id/comments/new', function(req, res){
+  Hike.findById(req.params.id, function(err, foundHike){
+    if(err){
+      console.log('error');
+    } else {
+      res.render('comments/newComment', {hike: foundHike});
+    }
+  })
+});
 
+app.post('/hikes/:id/comments', function(req, res){
+  //find hike using ID
+  Hike.findById(req.params.id, function(err, hike){
+    if(err){
+      console.log(err);
+      res.redirect('/hikes');
+    } else {
+      Comment.create(req.body.comment, function(err, comment){
+        if(err){
+          console.log(err);
+        } else {
+          hike.comments.push(comment);
+          hike.save();
+          res.redirect(`/hikes/${hike._id}`);
+        }
+      });
+    }
+  });
+  //create new comment
+
+  //connect new comment to hike
+
+  //redirect to hike show page
+});
 
 // this function starts the server.
 // it is also used in integration tests.

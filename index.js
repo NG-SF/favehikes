@@ -3,28 +3,15 @@ const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const Hike = require('./models/hike');
+const Comment = require('./models/comment');
 const {CLIENT_ORIGIN, PORT, DATABASE_URL, TESTING} = require('./config');
+const seedDB = require('./seed');
 
+seedDB();
 app.set('view engine', 'ejs');
 app.use( cors({ origin: CLIENT_ORIGIN }));
 app.use(bodyParser.urlencoded({extended: true}));
-
-const hikeSchema = new mongoose.Schema({
-  name: String,
-  image: String,
-  description: String
-});
-
-const Hike = mongoose.model('Hike', hikeSchema);
-
-
-let data = [
-  {name: 'hike 1', image: 'https://cdn.pixabay.com/photo/2014/05/03/00/42/vw-camper-336606_960_720.jpg'},
-  {name: 'hike 2', image: 'https://image.shutterstock.com/z/stock-photo-family-vacation-travel-rv-holiday-trip-in-motorhome-caravan-car-vacation-beautiful-nature-norway-1017257911.jpg'},
-  {name: 'hike 3', image: 'https://image.shutterstock.com/z/stock-photo-landscape-and-clouds-293246735.jpg'},
-  {name: 'hike 2', image: 'https://image.shutterstock.com/z/stock-photo-family-vacation-travel-rv-holiday-trip-in-motorhome-caravan-car-vacation-beautiful-nature-norway-1017257911.jpg'},
-  {name: 'hike 3', image: 'https://image.shutterstock.com/z/stock-photo-landscape-and-clouds-293246735.jpg'}
-  ];
 
 app.get('/', function(req, res){
   res.render('landing');

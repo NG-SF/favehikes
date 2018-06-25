@@ -1,10 +1,12 @@
 <% include ../partials/header %>
+<div class="container">
+<!-- closing tag in a footer partial -->
 
 <div class="row">
   <div class="col">
-    <h1 style="text-align:center;">Edit <%= hike.name %></h1>
+    <h1 class="text-center">Edit <%= hike.name %></h1>
       <div style="width: 30%; margin:5% auto;">
-        <form action="/hikes/<%= hike._id %>?_method=PUT" method="POST">
+        <form action="/hikes/<%= hike._id %>?_method=PUT" method="POST" class="formEditHike">
           <div class="form-group">
             <label for="name">Name:</label>
             <input type="text" name="name" class="form-control" id="name" aria-describedby="name" value="<%= hike.name %>">
@@ -13,16 +15,21 @@
           <div class="form-group">
             <label for="image">Image:</label>
             <input type="text" name="image" class="form-control" id="image" value="<%= hike.image %>">
-          </div>
-                  
+          </div>               
+
           <div class="form-group">
               <label for="description">Description:</label>
-              <input type="text" name="description" class="form-control" id="description" value="<%= hike.description %>">
+              <textarea name="description" class="form-control" id="description" rows="7"><%- hike.description %></textarea>
           </div>
         
+        <div class="form-group">
+            <label for="location">Location:</label>
+            <input class="form-control" type="text" name="location" id="location" value="<%= hike.location %>">
+        </div>
+
         <button type="submit" class="btn btn-primary btn-block">Submit</button>
         </form>
-        <a href="/hikes" class="btn pt-3">Go Back</a>
+        <a href="/hikes" class="btn btn-default pt-3">Go Back</a>
       </div>
     </div>
 </div>

@@ -1,10 +1,12 @@
 <% include ../partials/header %>
+<div class="container">
+<!-- closing tag in a footer partial -->
 
 <div class="row">    
   <div class="col-md-4">
-    <h2 class="lead p-4"><strong><%= hike.name %></strong>  located at:</h2>
-    <h3 class="p-3 text-primary"><%= hike.location %></h3>
-    <!-- <div id="map"> Map placement</div> -->
+    <h2 class="lead p-4"><strong class="text-primary"><%= hike.name %></strong>  located at:</h2>
+    <p class="p-3"><%= hike.location %></p>
+    <div id="map"></div>
   </div>
   <div class="col-md-8">
     <div class="card">
@@ -14,7 +16,7 @@
         <h3 class="card-header"><%= hike.name %></h3>
         <p class="card-text p-2"><%= hike.description %></p>
         <p class="card-text">
-          <em>Submitted by: <a href="/users/<%= hike.author.id %>"> <strong><%= hike.author.username %></strong></a> , <%= moment(hike.createdAt).fromNow() %></em>
+          <em>Submitted by:</em> <a href="/users/<%= hike.author.id %>"> <strong><%= hike.author.username %></strong></a> <%= moment(hike.createdAt).fromNow() %>
         </p>
                  
         <!-- hide btns from user who doesn't have permission to edit or delete -->
@@ -158,6 +160,35 @@
 
 <!-- Bootstrap JS CDN -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script>
+  function initMap() {
+    var lat = <%= hike.lat %>;
+    var lng = <%= hike.lng %>;
+    var center = {lat: lat, lng: lng };
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 8,
+        center: center,
+        scrollwheel: false
+    });
+    var contentString = `
+      <strong><%= hike.name %><br />
+      <%= hike.location %></strong>
+      <p><%= hike.description %></p>
+    `
+    var infowindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+    var marker = new google.maps.Marker({
+        position: center,
+        map: map
+    });
+    marker.addListener('click', function() {
+      infowindow.open(map, marker);
+    });
+  }
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWSiHoJh-SPHWR4yYLqAc_t7RWlazQD0c&callback=initMap"></script>
 
 </body>
 </html>

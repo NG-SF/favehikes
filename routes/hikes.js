@@ -2,10 +2,20 @@ const express = require('express');
 const router = express.Router();
 const {isLoggedIn, checkHikeOwnership} = require('../middleware/index');
 const Hike = require('../models/hike');
+const NodeGeocoder = require('node-geocoder');
+ 
+var options = {
+  provider: 'google',
+  httpAdapter: 'https',
+  apiKey: process.env.GEOCODER_API_KEY,
+  formatter: null
+};
+ 
+var geocoder = NodeGeocoder(options);
 
 // GET all hikes Route
 router.get('/', function(req, res){
-  let perPage = 8;
+  let perPage = 6;
   let pageQuery = parseInt(req.query.page);
   let pageNumber = pageQuery ? pageQuery : 1;
   if (req.query.search) {
@@ -77,13 +87,25 @@ router.post('/', isLoggedIn, function(req, res){
     id: req.user._id,
     username: req.user.username
   };
-  let newHike = {
-    name, 
-    image,
-    description,
-    location,
-    author
-    };
+
+  geocoder.geocode(location, function(err, data){
+    if (err || !data.length) {
+      console.log('error', err);
+      req.flash('error', 'Invalid address');
+      return res.redirect('back');
+    }
+    let lat = data[0].latitude;
+    let lng = data[0].longitude;
+    let location = data[0].formattedAddress;
+    let newHike = {
+      name, 
+      image,
+      description,
+      location,
+      lat,
+      lng,
+      author
+      };
 
   Hike.create(newHike, function(err, newHike){
     if(err){
@@ -91,7 +113,8 @@ router.post('/', isLoggedIn, function(req, res){
     } else{
       res.redirect('/hikes');
     }
-  })
+    });
+  });
 });
 
 // GET Route to show specific hike
@@ -115,10 +138,18 @@ router.get('/:id/edit', checkHikeOwnership, function(req, res) {
 
 // Update specific hike
 router.put('/:id', checkHikeOwnership, function(req, res) {
+  geocoder.geocode(req.body.location, function(err, data){
+    if (err || !data.length) {
+      req.flash('error', 'Invalid address');
+      return res.redirect('back');
+    }
+
+  let lat = data[0].latitude;
+  let lng = data[0].longitude;
+  let location = data[0].formattedAddress;
   let name = req.body.name;
   let image = req.body.image;
   let description = req.body.description;
-  let location = req.body.location;
   let author = {
     id: req.user._id,
     username: req.user.username
@@ -129,6 +160,8 @@ router.put('/:id', checkHikeOwnership, function(req, res) {
       image,
       description,
       location,
+      lat,
+      lng,
       author
     };
 
@@ -142,6 +175,7 @@ router.put('/:id', checkHikeOwnership, function(req, res) {
         res.redirect(`/hikes/${req.params.id}`);
       }
     });
+  });
 });
 
 // Delete hike

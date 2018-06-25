@@ -1,4 +1,6 @@
 <% include ../partials/header %>
+<div class="container">
+<!-- closing tag in a footer partial -->
 
 <div class="row">
 
@@ -6,7 +8,7 @@
 
   <div class="form-style">
     <h1 class="header-title text-center">Log In</h1>
-    <form action="/login" method="post">
+    <form action="/login" method="post" class="formLogin">
       <div class="form-group">
         <label for="userName">Username:</label>
         <input type="text" class="form-control" id="userName" name="username" required>
@@ -21,6 +23,11 @@
     </form>
 </div>
 <!-- end form-style div -->
+<section>
+  <h2>Demo Account</h2>
+  <p>Login: harry</p>
+  <p>Password: potter</p>
+</section>
 </div>
    <!-- end col-md-12 -->
 </div>

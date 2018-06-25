@@ -1,11 +1,13 @@
 <% include ../partials/header %>
+<div class="container">
+<!-- closing tag in a footer partial -->
 
 <div class="row">
 <div class="col-md-12">
 
   <div class="form-style" >
     <h1 class="header-title text-center">Register</h1>
-    <form action="/register" method="post">
+    <form action="/register" method="post" class="formRegister">
       <div class="form-group">
         <label for="fName">First Name:</label>
         <input type="text" class="form-control" id="fName" name="firstName">
@@ -16,11 +18,11 @@
       </div>
       <div class="form-group">
         <label for="userName">Username:</label>
-        <input type="text" class="form-control" id="userName" name="username" required>
+        <input type="text" class="form-control" id="userName" name="username" placeholder="required" required>
       </div>
       <div class="form-group">
         <label for="userPassword">Password:</label>
-        <input class="form-control" id="userPassword" type="password" name="password" required>
+        <input class="form-control" id="userPassword" type="password" name="password" placeholder="required" required>
       </div>
       <div class="form-group">
         <label for="avatar">Avatar:</label>

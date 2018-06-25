@@ -3,7 +3,7 @@
 <div class="container">
   <header class="jumbotron">
     <div class="container">
-      <h1 class="text-center text-primary m-3">Welcome to Favehikes!</h1>
+      <h1 class="text-center welcome m-3">Welcome to Favehikes!</h1>
       <p>View our hand-picked hikes from all over the world.</p>
       <p>When you register, you can add your favorite hikes and comment on hikes submitted by others.</p>
       <h2><a class="btn btn-primary btn-large" href="/hikes/new">Add new hike</a></h2>
@@ -11,7 +11,7 @@
       <form class="form-inline search" action="/hikes" method="GET">
         <div class="form-group">
           <input type="text" name="search" placeholder="Search hikes..." class="form-control">
-          <input type="submit" value="search" class="btn btn-primary">
+          <input type="submit" value="search" class="btn btn-info">
         </div>
       </form>
     </div>
@@ -70,7 +70,6 @@
             <img class="card-img-top" src="<%= hike.image %>" alt="hike">
             <div class="card-body py-2">
               <h3 class="card-title"><%= hike.name%></h3>
-              <p><%= hike.description%></p>
               <a href="/hikes/<%= hike._id%>" class="btn btn-primary m-3">Details</a>
             </div>
 

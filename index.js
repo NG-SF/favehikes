@@ -15,10 +15,10 @@ const { isLoggedIn } = require('./middleware/index');
 const commentRoutes = require('./routes/comments');
 const hikeRoutes = require('./routes/hikes');
 const indexRoutes = require('./routes/index');
-const seedDB = require('./seed');
+const methodOverride = require('method-override');
 
+app.locals.moment = require('moment');
 mongoose.Promise = global.Promise;
-seedDB();
 
 //Passport config
 app.use(require('express-session')({
@@ -37,6 +37,7 @@ app.set('view engine', 'ejs');
 app.use( cors({ origin: CLIENT_ORIGIN }));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/public'));
+app.use(methodOverride('_method'));
 
 // show messages to user
 app.use(flash());

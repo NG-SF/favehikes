@@ -1,47 +1,163 @@
 <% include ../partials/header %>
 
-<div class="row">
-    <div class="col-md-4">
-        <p class="lead">More information on <%= hike.name%></p>
+<div class="row">    
+  <div class="col-md-4">
+    <h2 class="lead p-4"><strong><%= hike.name %></strong>  located at:</h2>
+    <h3 class="p-3 text-primary"><%= hike.location %></h3>
+    <!-- <div id="map"> Map placement</div> -->
+  </div>
+  <div class="col-md-8">
+    <div class="card">
+      <img class="card-img-top" src="<%= hike.image %>" alt="hike trail">
+
+      <div class="caption card-body">
+        <h3 class="card-header"><%= hike.name %></h3>
+        <p class="card-text p-2"><%= hike.description %></p>
+        <p class="card-text">
+          <em>Submitted by: <a href="/users/<%= hike.author.id %>"> <strong><%= hike.author.username %></strong></a> , <%= moment(hike.createdAt).fromNow() %></em>
+        </p>
+                 
+        <!-- hide btns from user who doesn't have permission to edit or delete -->
+        <% if(currentUser && hike.author.id.equals(currentUser._id)) { %>
+          <a class="btn btn-warning" href="/hikes/<%= hike._id %>/edit">Edit</a>
+          <form class="delete-form" action="/hikes/<%= hike._id %>?_method=DELETE" method="post">
+            <button class="btn btn-danger" name="button">Delete</button>
+          </form>
+          <% } %>         
+      </div>
+  </div>
+ 
+<!--COMMENT SECTION START-->
+<div class="card">
+    <!-- Comment section title  -->
+    <h4 class="card-title text-center p-2">Comments <span aria-hidden="true"><i class="far fa-comment-alt"></i></span></h4>
+
+    <div class="text-right p-3">
+    <!--Setting up the add new comment button that is used for collapsing-->
+    <a class="btn btn-success" role="button" data-toggle="collapse" href="#collapseComment" aria-expanded="false" aria-controls="collapseComment">
+    <span aria-hidden="true"><i class="fas fa-plus"></i></span> Add new comment</a>
     </div>
-    <div class="col-md-8">
-        <div class="card">
-        <img class="card-img-top" src="<%=hike.image %>" alt="hike">
-        
-        <div class="caption card-body">
-            <h2 class="float-right">$10/night</h2>
-            <h2 class="card-header"><%= hike.name %></h2>
-            <p class="card-text p-2"><%= hike.description %></p>
-            <p class="card-text"><em>Submitted by:  10 days ago</em></p>
-        </div>
+
+<!--Collapse Add a comment form START-->
+    <div class="collapse p-3" id="collapseComment">
+      <div class="card" style="border-left: 5px solid #00C851;">
+
+        <div class="container p-3">
+          <% if(!currentUser) { %>
+          <!--If the user is not logged in, direct him to the login page-->
+            <h5 class="p-3">You need to login before you can comment. <a href="/login">Click here</a> to go to the login page.</h5>
+            <% } %>
+
+            <% if(currentUser) { %>
+            <!--If the user is logged in, show the new comment form-->
+              <h4 class="text-center pt-2">Write your comment <span aria-hidden="true"><i class="fas fa-pencil-alt"></i></span></h4>
         </div>
 
-<!-- Comment section -->
-        <div class="card">
-            <h3 class="card-title text-center p-2">Comments:</h3>
-            <p>
-                <a href="/hikes/<%=hike._id%>/comments/new" class="btn btn-success float-right" role="button">Add new comment</a>
-            </p>
-            <hr>
-            <div class="container p-3">
-                <% hike.comments.forEach(function(comment){ %>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="container pl-4">
-                            <p> <strong><%= comment.author%>:</strong>
-                            <%= comment.text%></p>
-                            <!--Show when the comment was made-->
-                            <span class="float-right">5 days ago</span>
+            <form id="add-comment-form" class="p-3" action="/hikes/<%= hike._id %>/comments" method="POST">
+              <div class="form-group">
+                <input class="form-control" type="text" disabled value="<%= currentUser.username %>">
+              </div>
+              <div class="form-group">
+                <textarea class="form-control" name="comment[text]" placeholder="Write your comment..." form="add-comment-form" rows="5" cols="70"></textarea>
+              </div>
+              <div class="form-group">
+                <button class="btn btn-success btn-sm">Comment <span aria-hidden="true"><i class="far fa-comment-alt"></i></span></button>
+              </div>
+            </form>
+          <% } %>
+      </div>
+    </div><!--Collapse Add a comment form END-->
+
+</div>
+<!-- end card -->
+
+<div class="card">
+<!--Check if there are comments, if there are none say no comments.-->
+  <% if (hike.comments.length === 0) { %>
+    <p class="p-2"><em>No comments yet.</em></p> 
+    <% } %>
+
+  <% hike.comments.forEach(function(comment){ %>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="container pl-4">
+        
+          <p class="pt-1"><strong>
+            <% if (currentUser && currentUser._id.equals(comment.author.id)) { %>
+            <!--If the current user owns the comment, change the color of the user icon-->
+              <span style="color: orange;" aria-hidden="true"><i class="far fa-user"></i></span>
+            <% } else { %>
+            <!--Else just display it black-->
+              <span aria-hidden="true"><i class="far fa-user"></i></span>
+            <% } %>
+            <!--Print out the author username-->
+              <%= comment.author.username %>
+          </strong></p>
+
+          <!--Show when the comment was made-->
+            <span class="float-right"><%= moment(comment.createdAt).fromNow() %></span>
+
+            <!-- Show the comment -->
+            <p class="card-text "><%= comment.text %></p>
+
+            <!-- hide btns from user who doesn't have permission to edit or delete -->
+            <% if(currentUser && comment.author.id.equals(currentUser._id)) { %>
+            <div class="float-right">
+              <!--Edit button used for collapsing the edit comment form-->
+                <a class="btn btn-xs btn-warning" role="button" data-toggle="collapse" href="#collapseEdit<%= comment._id %>" aria-expanded="false" aria-controls="collapse<%= comment._id %>">Edit</a>
+
+                <!--Delete comment button-->
+                <form id="delete-form" action="/hikes/<%= hike._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST" style="display: inline;">
+                  <button class="btn btn-xs btn-danger">Delete</button>
+                </form>
+
+                <!--Edit comment form-->
+                  <div class="collapse" id="collapseEdit<%= comment._id %>">
+                    <div class="card" style="border-left: 5px solid #ffbb33; margin-top: 15px;">
+                      <h4 class="text-center pt-2">Edit your comment <span aria-hidden="true"><i class="far fa-edit"></i></span></h4>
+                      <form id="edit-comment-form<%= comment._id %>" class="p-3" action="/hikes/<%= hike._id %>/comments/<%= comment._id %>?_method=PUT" method="POST">
+                        <div class="form-group">
+                          <input class="form-control" type="text" disabled value="<%= currentUser.username %>">
                         </div>
+                        <div class="form-group">
+                          <textarea class="form-control" name="comment[text]" placeholder="Your comment text..." form="edit-comment-form<%= comment._id %>" rows="5" cols="70"><%= comment.text %></textarea>
+                        </div>
+                        <div class="form-group">
+                          <button class="btn btn-warning btn-sm">Edit comment <span aria-hidden="true"><i class="far fa-comment"></i></span></button>
+                        </div>
+                        </form>
+                      
                     </div>
                 </div>
-                        <% }) %>
-            </div>
+                <!-- end edit comment form -->
+                </div>
 
-        </div>
+          <% } %>
 
-    </div>
+          </div><!-- end container -->
+      </div><!-- end of col-12 -->
+    </div><!-- end row -->
+
+<hr>
+    <% }) %> <!-- end forEach -->
+
 </div>
+<!-- end card -->
+</div>
+<!-- end col-8 -->
+</div>
+<!-- end row -->
 
+</div><!-- /.container -->
 
-<% include ../partials/footer %>
+</div> 
+        
+<!-- jQuery CDN -->
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous">
+</script>
+
+<!-- Bootstrap JS CDN -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+</html>

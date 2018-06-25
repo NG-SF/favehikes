@@ -1,0 +1,34 @@
+<% include ../partials/header %>
+
+<div class="row pt-4" style="display:flex; flex-wrap: wrap;">
+  <div class="col-md-4">
+    <div class="card">
+    <h1 class="card-header"> <%= user.username %> Profile</h1>
+    <img class="profile-img" src="<%= user.avatar %>" alt="user profile image">
+    <p class="card-text p-3"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur repellat molestias veniam inventore sed cupiditate, eveniet sequi similique sapiente, quos saepe quae in neque, eligendi ducimus blanditiis nisi fugiat enim!</p>
+
+    </div>
+    <!-- end card -->
+  </div>
+  <div class="col-md-8">
+    <div class="card p-3">
+      <h2> <%= user.username %>`s hikes:</h2>
+        <div class="row">
+        <% hikes.forEach(function(hike) { %>
+        <section class="col-md-4 col-sm-6 py-2">
+            <div class="card border-primary text-center">
+                <img class="card-img-top" src=" <%= hike.image %> " alt="trail image" />
+                <div class="card-body align-middle pb-2">
+                  <h4 class="card-title"><%= hike.name %></h4>
+                  <a href="/hikes/<%= hike._id %>" class="btn btn-sm btn-primary" role="button">More Info</a>
+              </div>
+            </div>
+        </section>
+
+       <% }); %> <!-- end forEach -->
+      </div> <!-- end row -->
+    </div> <!-- end card -->
+  </div> <!-- end col-8 -->
+</div> <!-- end row -->
+
+<% include ../partials/footer %>

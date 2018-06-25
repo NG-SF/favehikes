@@ -45,23 +45,23 @@ body {
 
 /* Each list item needs a background-image and the last four need an animation-delay (this way they all fire off one after the other in ten second intervals) */
 .slideshow li:nth-child(1) {
-  background-image: url('../images/trail1.jpg');
+  background-image: url('../images/trail4.jpg');
 }
 .slideshow li:nth-child(2) {
   background-image: url('../images/trail2.jpg');
-  animation-delay: 10s;
+  animation-delay: 5s;
 }
 .slideshow li:nth-child(3) {
   background-image: url('../images/trail3.jpg');
-  animation-delay: 20s;
+  animation-delay: 10s;
 }
 .slideshow li:nth-child(4) {
-  background-image: url('../images/trail4.jpg');
-  animation-delay: 30s;
+  background-image: url('../images/trail1.jpg');
+  animation-delay: 20s;
 }
 .slideshow li:nth-child(5) {
   background-image: url('../images/trail5.jpg');
-  animation-delay: 40s;
+  animation-delay: 30s;
 }
 
 @keyframes imageAnimation {

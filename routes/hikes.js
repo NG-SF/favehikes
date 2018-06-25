@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const {isLoggedIn, checkHikeOwnership} = require('../middleware/index');
-const Comment = require('../models/comment');
 const Hike = require('../models/hike');
 
 // GET all hikes Route

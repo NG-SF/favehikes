@@ -4,7 +4,7 @@
   "description": "app for adding favorite hikes",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --exit"
   },
   "author": "Nataliya Gapochka",
   "license": "ISC",
@@ -24,5 +24,10 @@
     "passport": "0.4.0",
     "passport-local": "1.0.0",
     "passport-local-mongoose": "5.0.1"
+  },
+  "devDependencies": {
+    "chai": "4.1.2",
+    "chai-http": "4.0.0",
+    "mocha": "5.2.0"
   }
 }

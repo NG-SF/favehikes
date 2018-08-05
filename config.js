@@ -5,6 +5,6 @@ exports.TEST_DATABASE_URL = process.env.TEST_DATABASE_URL || 'mongodb://localhos
 exports.PORT = process.env.PORT || 3000;
 exports.CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 8080;
 
-exports.SECRET = process.env.SECRET || 'new secret'; 
+exports.SECRET = process.env.SECRET; 
 
 exports.TESTING = false

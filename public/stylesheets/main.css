@@ -68,6 +68,7 @@ body {
 
 .card-size {
   width: 310px;
+  height: 350px;
   margin: 10px;
 }
 
@@ -77,6 +78,10 @@ body {
   justify-content: space-evenly;
   max-width: 100%;
   margin: 10px auto;
+}
+
+#profile-card {
+  height: 270px;
 }
 
 #map {

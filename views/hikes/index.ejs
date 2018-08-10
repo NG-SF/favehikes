@@ -63,20 +63,19 @@
   </nav>
 
   <div class="row text-center">
-    <div class="cards">
+    <div id="center">
+    <div class="card-deck">
       <% hikes.forEach(hike => { %>
-      <!-- <section class="col-md-4 col-sm-6 py-3"> -->
-          <div class="card border-primary card-size">
+          <div class="card border-primary" id="card-index">
             <img class="card-img-top" src="<%= hike.image %>" alt="hike">
             <div class="card-body py-2">
               <h3 class="card-title"><%= hike.name%></h3>
               <a href="/hikes/<%= hike._id%>" class="btn btn-primary m-3">Details</a>
             </div>
-
           </div>
-        <!-- </section> -->
       <% }); %>
       </div>
+    </div>
     </div>
 <!-- end of row -->
   </div>

@@ -43,7 +43,10 @@ router.get('/login', function(req, res) {
 });
 
 // handle log-in
-router.post('/login', passport.authenticate('local', { failureRedirect: './login' }), function(req, res) {
+router.post('/login', passport.authenticate('local', { 
+  failureRedirect: './login',
+  failureFlash: true
+ }), function(req, res) {
   req.flash('success', `Welcome back!`);
   res.redirect('/hikes');
 });

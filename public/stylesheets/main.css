@@ -66,22 +66,25 @@ body {
   margin: 5px auto;
 }
 
-.card-size {
-  width: 310px;
-  height: 350px;
-  margin: 10px;
+#card-index {
+  flex-basis: 300px;
+  flex-grow: 0;
+  margin-bottom: 20px;
 }
 
-.cards {
-  display: flex;
-  flex-wrap: wrap;
+.card-deck {
   justify-content: space-evenly;
-  max-width: 100%;
-  margin: 10px auto;
+}
+
+#center {
+  max-width: 1000px;
+  margin: 20px auto;
 }
 
 #profile-card {
-  height: 270px;
+  flex-basis: 240px;
+  flex-grow: 0;
+  margin-bottom: 20px;
 }
 
 #map {
